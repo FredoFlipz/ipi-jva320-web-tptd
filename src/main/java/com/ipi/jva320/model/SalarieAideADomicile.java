@@ -3,13 +3,10 @@ package com.ipi.jva320.model;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-public class SalarieAideADomicile {
+public class SalarieAideADomicile  implements Comparable<SalarieAideADomicile> {
 
     public static float CONGES_PAYES_ACQUIS_PAR_MOIS = 2.5f;
 
@@ -32,9 +29,13 @@ public class SalarieAideADomicile {
 
     private LocalDate moisEnCours;
     private LocalDate moisDebutContrat;
-
-    private double joursTravaillesAnneeN= 0;
+    private Double joursTravaillesAnneeN= (double) 0;
     private double congesPayesAcquisAnneeN= 0;
+
+    @Override
+    public int compareTo(SalarieAideADomicile autrePersonne) {
+        return this.nom.compareTo(autrePersonne.getNom());
+    }
 
     /** en année N sur l'acquis N-1 */
     @Convert(converter = LinkedHashSetStringConverter.class)

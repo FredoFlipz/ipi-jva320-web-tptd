@@ -1,8 +1,6 @@
 package com.ipi.jva320.repository;
-
 import com.ipi.jva320.model.SalarieAideADomicile;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;

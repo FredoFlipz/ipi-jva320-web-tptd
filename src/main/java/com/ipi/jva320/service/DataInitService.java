@@ -23,8 +23,13 @@ public class DataInitService implements CommandLineRunner {
         }
 
         SalarieAideADomicile s1 = this.salarieAideADomicileService.creerSalarieAideADomicile(
-                new SalarieAideADomicile("Jean", LocalDate.parse("2022-12-05"), LocalDate.parse("2022-12-05"),
+                new SalarieAideADomicile("Jean Paul", LocalDate.parse("2022-12-05"), LocalDate.parse("2022-12-05"),
                         20, 0,
                         80, 10, 1));
+ /*
+        SalarieAideADomicile s2 = this.salarieAideADomicileService.creerSalarieAideADomicile(
+                new SalarieAideADomicile("Rémi Perez", LocalDate.parse("2022-12-05"), LocalDate.parse("2022-12-05"),
+                        10, 2,
+                        15, 18, 1));*/
     }
 }

@@ -1,66 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <title>Gestion des salariés</title>
-    <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <link rel="stylesheet" href="./static/font-awesome.css">
-</head>
-<body>
+    <span th:insert="~{common :: head}">Head</span>
 
-<div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="http://localhost:8080/">Gestion des salariés</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <body>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li><a href="http://localhost:8080/salaries?page=0&amp;size=10&amp;sortProperty=nom&amp;sortDirection=ASC" class="nav-link">Liste des salariés <span class="badge badge-primary">26</span></a></li>
-            </ul>
+    <div th:insert="~{common :: menu}">Menu</div>
 
-            <form class="form-inline my-2 my-lg-0" role="search" action="http://localhost:8080/salaries" method="GET">
-                <div class="form-group form-inline">
-                    <input name="nom" class="form-control" placeholder="Rechercher un nom" type="text">
+    <div class="container">
+
+
+        <h2 th:text="${message}">Titre</h2>
+
+        <form id="saveForm" th:action="${salarie?.id == null ? 'http://localhost:8080/salaries/aide/create' : 'http://localhost:8080/salaries/aide/update'}" method="post" class="row" onsubmit="return validationForm()">
+
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="id" th:if="${visible}">ID</label>
+                    <input type="text" th:value="${salarie?.id ?: vide}" class="form-control" name="id" id="id" readonly="readonly" th:if="${visible}">
+
+                    <label class="form-control-label" for="nom">Nom</label>
+                    <input type="text" th:value="${salarie?.nom ?: vide}" class="form-control" name="nom" id="nom">
+
+                    <label class="form-control-label" for="nom">moisEnCours</label>
+                    <input type="date" th:value="${salarie?.moisEnCours ?: vide}" class="form-control" name="moisEnCours"
+                           id="moisEnCours">
+
+                    <label class="form-control-label" for="nom">moisDebutContrat</label>
+                    <input type="date" th:value="${salarie?.moisDebutContrat ?: vide}" class="form-control" name="moisDebutContrat" id="moisDebutContrat">
                 </div>
-                <button type="submit" class="btn btn-outline-success ml-2 my-2 my-sm-0">Rechercher</button>
-            </form>
-        </div>
-    </nav>
-</div>
-
-<div class="container">
-    <div th:text="#{msg.salarie}"></div><!-- TODO better messages example -->
-
-    <h2>Détail du salarié</h2>
-    
-    <form id="saveForm" action="http://localhost:8080/salaries/aide/10" method="post" class="row">
-
-        <div class="col-lg-6">
-            <div class="form-group">
-                <label class="form-control-label" for="id">ID</label>
-                <input type="text" value="10" class="form-control" name="id" id="id" disabled="true">
-
-                <label class="form-control-label" for="nom">Nom</label>
-                <input type="text" value="Jean Dupont" class="form-control" name="nom" id="nom">
-
-                <label class="form-control-label" for="nom">moisEnCours</label>
-                <input type="date" value="03/2023" class="form-control" name="moisEnCours"
-                       id="moisEnCours">
-
-                <label class="form-control-label" for="nom">moisDebutContrat</label>
-                <input type="date" value="08/2022" class="form-control" name="moisDebutContrat" id="moisDebutContrat">
             </div>
-        </div>
 
-        <div class="col-lg-6">
-            <div class="form-group">
+            <div class="col-lg-6">
+                <div class="form-group">
 
+                    <div>
+                        <label class="form-control-label" for="nom">joursTravaillesAnneeN</label>
+                        <div class="input-group">
+                            <input type="number" step="0.5" th:value="${salarie?.joursTravaillesAnneeN ?: vide}" class="form-control" name="joursTravaillesAnneeN" id="joursTravaillesAnneeN">
+                            <div class="input-group-append">
+                                <span class="input-group-text">j</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="form-control-label" for="nom">congesPayesAcquisAnneeN</label>
+                        <div class="input-group">
+                            <input type="number" step="0.5" th:value="${salarie?.congesPayesAcquisAnneeN ?: vide}" class="form-control" name="congesPayesAcquisAnneeN" id="congesPayesAcquisAnneeN">
+                        <div class="input-group-append">
+                            <span class="input-group-text">j</span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
                 <div>
-                    <label class="form-control-label" for="nom">joursTravaillesAnneeN</label>
+                    <label class="form-control-label" for="nom">joursTravaillesAnneeNMoins1</label>
                     <div class="input-group">
-                        <input type="number" step="0.5" value="20" class="form-control" name="joursTravaillesAnneeN" id="joursTravaillesAnneeN">
+                        <input type="number" step="0.5" th:value="${salarie?.joursTravaillesAnneeNMoins1 ?: vide}" class="form-control" name="joursTravaillesAnneeNMoins1" id="joursTravaillesAnneeNMoins1">
                         <div class="input-group-append">
                             <span class="input-group-text">j</span>
                         </div>
@@ -68,74 +67,123 @@
                 </div>
 
                 <div>
-                    <label class="form-control-label" for="nom">congesPayesAcquisAnneeN</label>
+                    <label class="form-control-label" for="nom">congesPayesAcquisAnneeNMoins1</label>
                     <div class="input-group">
-                        <input type="number" step="0.5" value="2.5" class="form-control" name="congesPayesAcquisAnneeN" id="congesPayesAcquisAnneeN">
-                    <div class="input-group-append">
-                        <span class="input-group-text">j</span>
+                        <input type="number" step="0.5" th:value="${salarie?.congesPayesAcquisAnneeNMoins1 ?: vide}" class="form-control" name="congesPayesAcquisAnneeNMoins1" id="congesPayesAcquisAnneeNMoins1">
+                        <div class="input-group-append">
+                            <span class="input-group-text">j</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-control-label" for="nom">congesPayesPrisAnneeNMoins1</label>
+                    <div class="input-group">
+                        <input type="number" step="0.5" th:value="${salarie?.congesPayesAcquisAnneeNMoins1 ?: vide}" class="form-control" name="congesPayesPrisAnneeNMoins1" id="congesPayesPrisAnneeNMoins1">
+                        <div class="input-group-append">
+                            <span class="input-group-text">j</span>
+                        </div>
                     </div>
                 </div>
             </div>
+        </form>
+        <!--<div class="row">
+            <div class="col-lg-6">
+                <ul class="list-group list-unstyled">
+                    <li class="alert alert-danger" role="alert">Erreur dans un champ !</li>
+                </ul>
+            </div>
+        </div>-->
+        <div class="row mt-2">
+            <div class="col-lg-6">
+                <input form="saveForm" class="btn btn-primary" type="submit" value="Enregistrer">
+
+                <a href="#" class="btn btn-danger" th:attr="id=${salarie.id}" onclick="confirmDelete(this)" th:if="${visible}">Supprimer</a>
+
             </div>
         </div>
-        
-
-        <div class="col-lg-6">
-            <div>
-                <label class="form-control-label" for="nom">joursTravaillesAnneeNMoins1</label>
-                <div class="input-group">
-                    <input type="number" step="0.5" value="80" class="form-control" name="joursTravaillesAnneeNMoins1" id="joursTravaillesAnneeNMoins1">
-                    <div class="input-group-append">
-                        <span class="input-group-text">j</span>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <label class="form-control-label" for="nom">congesPayesAcquisAnneeNMoins1</label>
-                <div class="input-group">
-                    <input type="number" step="0.5" value="10" class="form-control" name="congesPayesAcquisAnneeNMoins1" id="congesPayesAcquisAnneeNMoins1">
-                    <div class="input-group-append">
-                        <span class="input-group-text">j</span>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <label class="form-control-label" for="nom">congesPayesPrisAnneeNMoins1</label>
-                <div class="input-group">
-                    <input type="number" step="0.5" value="4" class="form-control" name="congesPayesPrisAnneeNMoins1" id="congesPayesPrisAnneeNMoins1">
-                    <div class="input-group-append">
-                        <span class="input-group-text">j</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-    </form>
-    
-    <div class="row">
-        <div class="col-lg-6">
-            <ul class="list-group list-unstyled">
-                <li class="alert alert-danger" role="alert">Erreur dans un champ !</li>
-            </ul>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-lg-6">
-            <input form="saveForm" class="btn btn-primary" type="submit" value="Enregistrer">
-            <a href="/salaries/10/delete" class="btn btn-danger">Supprimer</a>
-        </div>
+        <!--<div class="row">
+        <table>
+            <tr><td class="alert alert-danger" role="alert">Erreur de type de données !</td></tr>
+        </table>
+        <div>Erreur globale spécifique !</div>
+        </div>-->
     </div>
 
-    <div class="row">
-    <table>
-        <tr><td class="alert alert-danger" role="alert">Erreur de type de données !</td></tr>
-    </table>
-    <div>Erreur globale spécifique !</div>
+    <script th:inline="javascript">
+        function confirmDelete(link) {
+            let confirmed = confirm('Êtes-vous sûr de vouloir supprimer ce salarié ?');
+            if (confirmed) {
+                window.location.href = '/salaries/' + link.getAttribute('id') + '/delete';
+            }
+        }
+
+        function validationForm() {
+            var nom = document.getElementById('nom').value;
+            var moisEnCours = document.getElementById('moisEnCours').value;
+            var moisDebutContrat = document.getElementById('moisDebutContrat').value;
+            var joursTravaillesAnneeNMoins1 = document.getElementById('joursTravaillesAnneeNMoins1').value;
+            var congesPayesAcquisAnneeNMoins1 = document.getElementById('congesPayesAcquisAnneeNMoins1').value;
+            var congesPayesPrisAnneeNMoins1 = document.getElementById('congesPayesPrisAnneeNMoins1').value;
+            var joursTravaillesAnneeN = document.getElementById('joursTravaillesAnneeN').value;
+            var congesPayesAcquisAnneeN = document.getElementById('congesPayesAcquisAnneeN').value;
+
+            if (nom.trim() === "") {
+                alert("Veuillez entrer un nom.");
+                return false;
+            }
+            if (moisEnCours.trim() === "") {
+                alert("Veuillez entrer un mois en cours valide.");
+                return false;
+            }
+            if (moisDebutContrat.trim() === "") {
+                alert("Veuillez entrer un mois de début de contrat valide.");
+                return false;
+            }
+            if (joursTravaillesAnneeNMoins1.trim() === "" || isNaN(parseFloat(joursTravaillesAnneeNMoins1))) {
+                alert("Veuillez entrer un nombre valide pour joursTravaillesAnneeNMoins1.");
+                return false;
+            }
+            if (congesPayesAcquisAnneeNMoins1.trim() === "" || isNaN(parseFloat(congesPayesAcquisAnneeNMoins1))) {
+                alert("Veuillez entrer un nombre valide pour congesPayesAcquisAnneeNMoins1.");
+                return false;
+            }
+            if (congesPayesPrisAnneeNMoins1.trim() === "" || isNaN(parseFloat(congesPayesPrisAnneeNMoins1))) {
+                alert("Veuillez entrer un nombre valide pour congesPayesPrisAnneeNMoins1.");
+                return false;
+            }
+            if (joursTravaillesAnneeN.trim() === "" || isNaN(parseFloat(joursTravaillesAnneeN))) {
+                alert("Veuillez entrer un nombre valide pour joursTravaillesAnneeN.");
+                return false;
+            }
+            if (congesPayesAcquisAnneeN.trim() === "" || isNaN(parseFloat(congesPayesAcquisAnneeN))) {
+                alert("Veuillez entrer un nombre valide pour congesPayesAcquisAnneeN.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+    <div th:if="${creationReussi}" class="alert alert-success alert-dismissible fade show fixed-top custom-alert mx-auto d-flex justify-content-center align-items-center" role="alert" style="max-width: 500px; top: 30px;">
+        <span>Création réussie !</span>
     </div>
-</div>
+
+    <div th:if="${modificationReussi}" class="alert alert-success alert-dismissible fade show fixed-top custom-alert mx-auto d-flex justify-content-center align-items-center" role="alert" style="max-width: 500px; top: 30px;">
+        <span>Modification réussie !</span>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            setTimeout(function() {
+                $(".custom-alert").alert('close');
+            }, 2000);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-</body></html>
+    </body>
+</html>
